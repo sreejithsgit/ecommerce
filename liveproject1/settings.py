@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'homeapp',
+    'django_filters',
     
     # thrid party app
     'cart'

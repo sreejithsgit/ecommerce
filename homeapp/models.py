@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib import admin
 from django.utils.html import mark_safe
+from django import forms
+
 
 class Category(models.Model):
     category_name = models.CharField(max_length=100)
@@ -34,6 +36,12 @@ class CartItem(models.Model):
     product = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     user_session = models.CharField(max_length=32)
+    
+class ItemSearchForm(forms.Form):
+    keyword = forms.CharField(max_length=100, required=False)
+    category = forms.CharField(max_length=50, required=False)
+    # min_price = forms.DecimalField(required=False)
+    # max_price = forms.DecimalField(required=False)
     
 
    

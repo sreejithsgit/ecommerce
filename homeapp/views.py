@@ -9,6 +9,8 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django import forms
+from .forms import ItemSearchForm
 
 
 
@@ -114,4 +116,30 @@ def check_out(request):
         
     return render(request,'shop-checkout.html', {'cart_items': cart_items, 'grand_total': grand_total})
  
-   
+ 
+
+
+def item_list(request):
+    items = Item.objects.all()
+    form = ItemSearchForm(request.GET)
+
+    if form.is_valid():
+        keyword = form.cleaned_data.get('keyword')
+        category = form.cleaned_data.get('category')
+        min_price = form.cleaned_data.get('min_price')
+        max_price = form.cleaned_data.get('max_price')
+
+        if keyword:
+            items = items.filter(name__icontains=keyword)
+
+        if category:
+            items = items.filter(category=category)
+
+        if min_price:
+            items = items.filter(price__gte=min_price)
+
+        if max_price:
+            items = items.filter(price__lte=max_price)
+
+    return render(request, 'shop-grid.html', {'items': items, 'form': form})
+ 
